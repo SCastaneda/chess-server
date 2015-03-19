@@ -27,18 +27,24 @@
 (defn fill-row [n piece] 
   (cond
     (= n 0) nil
-    true (cons piece (empty-row (- n 1)))
+    true (cons piece (fill-row (- n 1) piece))
    )
   )
 
 (defn create-new-board []
-  '((wrook wknight wbishop wqueen wking wbishop wknight wrook)
-    (fill-row 8 wpawn)
-    (fill-row 8 empty-s) 
-    (fill-row 8 empty-s) 
-    (fill-row 8 empty-s) 
-    (fill-row 8 empty-s)
-    (fill-row 8 bpawn)
-    (wrook wknight wbishop wqueen wking wbishop wknight wrook)
-    )
+  (list 
+   (list wrook wknight wbishop wqueen wking wbishop wknight wrook)
+   (fill-row 8 wpawn)
+   (fill-row 8 empty-s) 
+   (fill-row 8 empty-s) 
+   (fill-row 8 empty-s) 
+   (fill-row 8 empty-s)
+   (fill-row 8 bpawn)
+   (list wrook wknight wbishop wqueen wking wbishop wknight wrook)
+   )
+  )
+  
+
+(defn get-square [board x y]
+  (nth (nth board y) x)
   )
