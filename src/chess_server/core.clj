@@ -40,7 +40,7 @@
    (fill-row 8 empty-s) 
    (fill-row 8 empty-s)
    (fill-row 8 bpawn)
-   (list wrook wknight wbishop wqueen wking wbishop wknight wrook)
+   (list brook bknight bbishop bqueen bking bbishop bknight brook)
    )
   )
   
