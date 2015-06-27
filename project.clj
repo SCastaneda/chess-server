@@ -8,6 +8,7 @@
                  [compojure "1.3.4"]
                  [ring/ring-json "0.3.1"]
                  [ring/ring-defaults "0.1.2"]
+                 [org.clojure/java.jdbc "0.3.7"]
                  ]
   :main ^:skip-aot chess-server.core
   :target-path "target/%s"

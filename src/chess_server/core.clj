@@ -2,7 +2,7 @@
   (:use
     [chess-server.chess]
     [chess-server.routes]
-    )
+    [chess-server.db])
   (:gen-class)
   )
 
