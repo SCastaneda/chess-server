@@ -1,15 +1,15 @@
 (ns chess-server.db)
 (require '[clojure.java.jdbc :as j])
 
-;; TODO: make configurable
-(def mysql-db {:subprotocol "mysql"
-               :subname "//127.0.0.1:3306/chess"
-               :user "chess-server"
-               :password "mate"}
+(defn create-db-conn [server user pw]
+  { :subprotocol "mysql"
+    :subname (str "//" server)
+    :user user
+    :password pw }
   )
 
-(defn getBoardByHash [hash]
-  (j/query mysql-db
+(defn getBoardByHash [conn hash]
+  (j/query conn
            ["select * from games where hash_game = ?" hash]
            )
   )

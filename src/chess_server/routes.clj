@@ -67,8 +67,8 @@
     )
   )
 
-(defn start-server []
-  (reset! server (run-server #'app {:port 8080}))
+(defn start-server [port]
+  (reset! server (run-server #'app {:port port}))
   )
   
 
