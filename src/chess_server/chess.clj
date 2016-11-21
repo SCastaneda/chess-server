@@ -1,61 +1,45 @@
 (ns chess-server.chess)
 
-;; define white pieces
-(def wking "wK")
-(def wqueen "wq")
-(def wknight "wk")
-(def wbishop "wb")
-(def wrook "wr")
-(def wpawn "wp")
+(def pieces
+  {
+    :empty "x"
+    :white {:king "wK" :queen "wq" :knight "wk" :bishop "wb" :rook "wr" :pawn "wp"}
+    :black {:king "bK" :queen "bq" :knight "bk" :bishop "bb" :rook "br" :pawn "bp"}
+    :start (fn [color] [(color :rook) (color :knight) (color :bishop) (color :queen)
+                        (color :king) (color :bishop) (color :knight) (color :rook)
+                        ])
+    }
+  )
 
-;; define black pieces
-(def bking "bK")
-(def bqueen "bq")
-(def bknight "bk")
-(def bbishop "bb")
-(def brook "br")
-(def bpawn "bp")
-
-(def empty-s "x") ;; empty square
-
-
-(defn fill-row [n piece] 
-  (cond
-    (= n 0) []
-    true (conj (fill-row (- n 1) piece) piece)
-   )
+(defn fill-row [n piece]
+  (into [] (repeat n piece))
   )
 
 (defn create-new-board []
-  [ 
-   [wrook wknight wbishop wqueen wking wbishop wknight wrook]
-   (fill-row 8 wpawn)
-   (fill-row 8 empty-s) 
-   (fill-row 8 empty-s) 
-   (fill-row 8 empty-s) 
-   (fill-row 8 empty-s)
-   (fill-row 8 bpawn)
-   [brook bknight bbishop bqueen bking bbishop bknight brook]
+  [
+    ((pieces :start) (pieces :white))
+    (fill-row 8 (-> pieces :white :pawn))
+    (fill-row 8 (pieces :empty))
+    (fill-row 8 (pieces :empty))
+    (fill-row 8 (pieces :empty))
+    (fill-row 8 (pieces :empty))
+    (fill-row 8 (-> pieces :black :pawn))
+    ((pieces :start) (pieces :black))
    ]
   )
-  
 
-(defn get-square [board x y]
-  (nth (nth board y) x)
+
+(defn get-square [board [x y]]
+  (get-in board [x y])
   )
 
-;; just moves pieces from one position to another, 
+;; just moves pieces from one position to another,
 ;; overriding the target position (no verification of moves yet)
-(defn move [board fromx fromy tox toy] 
-  (let 
-    [current (get-square board fromx fromy) 
-    future (get-square board tox toy)]
-    (assoc 
-      ;; move piece to new position
-      (assoc board toy (assoc (nth board toy) tox current))
-      fromy
-      ;; put an empty square at the current(from) position
-      (assoc (nth board fromy) fromx empty-s)
-      )
+(defn move [board [fromx fromy] [tox toy]]
+  (let
+    [from-piece (get-square board [fromx fromy])
+      to-piece (get-square board [tox toy])]
+    (-> b (assoc-in [tox toy] from-piece)
+          (assoc-in [fromx fromy] empty-s))
     )
   )

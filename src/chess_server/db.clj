@@ -10,6 +10,6 @@
 
 (defn getBoardByHash [conn hash]
   (j/query conn
-           ["select * from games where hash_game = ?" hash]
-           )
+    ["select * from games where hash_game = ?" hash]
+    )
   )

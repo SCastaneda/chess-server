@@ -1,5 +1,5 @@
 (ns chess-server.routes
-  (:use 
+  (:use
    chess-server.chess
    chess-server.utils
    [compojure.route :only [files not-found]]
@@ -13,42 +13,34 @@
 (defn update-userinfo [req]          ;; ordinary clojure function
   (let [user-id (-> req :params :id) ; param from uri
         password (-> req :body :password)] ; form param
-    {:status 200 
+    {:status 200
      :body { :id user-id :pw password :req (str req) }
      }
     )
   )
 
 (defn start-new-game [req]
-  (let []
-    (do
-      {
-       :status 200
-       :body { :hash "dtesting!" :board (create-new-board)  }
-       }
-      )
-    )
+  {
+   :status 200
+   :body { :hash "dtesting!" :board (create-new-board)  }
+   }
   )
 
 (defroutes all-routes
   (GET "/new-game" [] start-new-game)
-  ;(context "/user/:id" []
 
-  ;          (GET / [] get-user-by-id)
-  ;         (POST / [] update-userinfo))
-  (POST "/user/:id" [] update-userinfo)
   )
 
 ;; middleware
 (defn logRequest [app]
-  (fn [req]    
-    (print (getFormattedDate (new java.util.Date) "YYYY-MM-dd:hhmmss") "-" (str req) "\n")
+  (fn [req]
+    (println (getFormattedDate (new java.util.Date) "YYYY-MM-dd:hhmmss") "-" (str req) "\n")
     (app req)
     )
   )
 
 (def app
-  (-> 
+  (->
       (compojure.handler/site all-routes)
       (middleware/wrap-json-body {:keywords? true})
       middleware/wrap-json-response
@@ -70,5 +62,5 @@
 (defn start-server [port]
   (reset! server (run-server #'app {:port port}))
   )
-  
+
 
